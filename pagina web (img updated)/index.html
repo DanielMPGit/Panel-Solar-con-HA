@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesianos Loyola</title>
+    <link rel="icon" href="imagenes/loyola-logo.png" type="image/x-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('imagenes/background-img.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .card {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+        .card h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff002b;
+        }
+        .card h1 img {
+            margin-right: 15px;
+            width: 50px;
+            height: auto;
+        }
+        .btn-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #ff002b; 
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-custom img {
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+        }
+        .btn-custom:hover {
+            background-color: #ff002b;
+        }
+        .admin-title {
+            font-size: 1.5em;
+            color: #ff002b;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <h1>
+                <img src="imagenes/loyola-logo.png" 
+                     alt="Logo Salesianos Loyola" 
+                     width="50" 
+                     style="margin-right: 15px;">
+                Salesianos Loyola
+            </h1>
+            <a class="btn-custom" href="http://loyola.local:8123/lovelace/0" target="_blank">
+                <img src="imagenes/Homeassistant.png" alt="Home Assistant Logo">
+                Home Assistant
+            </a>
+            <a class="btn-custom" href="http://loyola.local:8080" target="_blank">
+                <img src="imagenes/NextCloud.png" alt="Nextcloud Logo">
+                NextCloud
+            </a>
+            <div class="admin-title">Admin</div>
+            <a class="btn-custom" href="https://loyola.local:9443" target="_blank">
+                <img src="imagenes/Portainer.png" alt="Portainer Logo">
+                Portainer
+            </a>
+            <a class="btn-custom" href="http://loyola.local:6052" target="_blank">
+                <img src="imagenes/Esphome.png" alt="ESP Home logo">
+                ESP Home
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
