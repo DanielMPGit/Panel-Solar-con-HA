@@ -1,0 +1,50 @@
+sudo pacman -S openssh 
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo systemctl status sshd
+ip addr
+(ip 192.168.1.74)
+sudo pacman -Syu
+sudo pacman -S fastfetch
+nano ~/.bashrc
+(Añadir en la ultima linea "fastfetch")
+sudo pacman -S docker docker-compose bash-completion
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo systemctl status docker
+docker version
+sudo docker run hello-world
+cat /etc/group
+sudo usermod -aG docker loyola
+newgrp docker
+groups
+docker run hello-world
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.5
+
+docker ps
+git clone https://github.com/jmlcas/home-assistant
+cd home-assistant
+sudo docker-compose up -d
+docker exec -it homeassistant bash
+wget -O - https://get.hacs.xyz | bash -
+
+docker run -p 8080:80 --name nextcloud nextcloud
+
+(debido a un error al iniciarse automaticamente añadimos este comando)
+docker update --restart unless-stopped nextcloud
+
+sudo pacman -S apache
+sudo systemctl enable httpd
+sudo systemctl start httpd
+sudo systemctl status httpd
+(Añadir al escritorio el archivo ".html")
+sudo mv /home/loyola/index.html /srv/http/
+cd /srv/http/
+
+docker run -d --name esphome \
+  --network host \
+  --restart=unless-stopped \
+  -v /opt/esphome:/config \
+  esphome/esphome

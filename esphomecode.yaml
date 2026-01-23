@@ -1,0 +1,162 @@
+esphome:
+  name: esphome-web-a1eee4
+  friendly_name: ESPHome Web a1eee4
+  min_version: 2024.11.0
+  name_add_mac_suffix: false
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Allow Over-The-Air updates
+ota:
+- platform: esphome
+
+wifi:
+  ssid: "PROYECTOS"
+  password: "Proyectos.Loyola.2019%"
+
+uart:
+  baud_rate: 115200
+  tx_pin: 1
+  rx_pin: 3
+  id: UART3
+  debug:
+    direction: BOTH
+    dummy_receiver: true
+    after:
+      delimiter: "\r\n"
+    sequence:
+      - lambda: |-
+          UARTDebug::log_string(direction, bytes);
+          std::string str(bytes.begin(), bytes.end());
+          
+          // Split the string based on the '|' delimiter
+          std::string delimiter = "|";
+          size_t pos = 0;
+          int light = 0;
+          float temperature = 0.0;
+          float humidity = 0.0;
+          int lr_angle = 0;
+          int ud_angle = 0;
+          int resolution = 0;
+          
+          // Parse the data by splitting the string into parts
+          if ((pos = str.find(delimiter)) != std::string::npos) {
+              light = std::stoi(str.substr(0, pos));
+              str.erase(0, pos + delimiter.length());
+          }
+          
+          if ((pos = str.find(delimiter)) != std::string::npos) {
+              temperature = std::stof(str.substr(0, pos));
+              str.erase(0, pos + delimiter.length());
+          }
+          
+          if ((pos = str.find(delimiter)) != std::string::npos) {
+              humidity = std::stof(str.substr(0, pos));
+              str.erase(0, pos + delimiter.length());
+          }
+          
+          if ((pos = str.find(delimiter)) != std::string::npos) {
+              lr_angle = std::stoi(str.substr(0, pos));
+              str.erase(0, pos + delimiter.length());
+          }
+          
+          if ((pos = str.find(delimiter)) != std::string::npos) {
+              ud_angle = std::stoi(str.substr(0, pos));
+              str.erase(0, pos + delimiter.length());
+          }
+          
+          // The last value is resolution
+          resolution = std::stoi(str);
+          
+          // Log the parsed values for debugging
+          ESP_LOGD("uart", "Parsed values - Light: %d, Temp: %f, Humidity: %f, LR Angle: %d, UD Angle: %d, Resolution: %d", 
+                  light, temperature, humidity, lr_angle, ud_angle, resolution);
+
+          // Update the state of the relevant sensors
+          id(light_sensor).publish_state(light);
+          id(temperature_sensor).publish_state(temperature);
+          id(humidity_sensor).publish_state(humidity);
+          id(lr_angle_sensor).publish_state(lr_angle);
+          id(ud_angle_sensor).publish_state(ud_angle);
+          id(resolution_sensor).publish_state(resolution);
+          
+sensor:
+  - platform: template
+    name: "Light Level"
+    id: light_sensor
+    unit_of_measurement: "lux"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Temperature"
+    id: temperature_sensor
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Humidity"
+    id: humidity_sensor
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Servo LR Angle"
+    id: lr_angle_sensor
+    unit_of_measurement: "°"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Servo UD Angle"
+    id: ud_angle_sensor
+    unit_of_measurement: "°"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Resolution"
+    id: resolution_sensor
+    accuracy_decimals: 0
+
+output:
+  - platform: gpio
+    pin: GPIO26
+    id: led_1
+
+  - platform: gpio
+    pin: GPIO27
+    id: led_2
+
+  - platform: gpio
+    pin: GPIO25
+    id: led_3
+
+  - platform: gpio
+    pin: GPIO4
+    id: led_4
+
+light:
+  - platform: binary
+    name: "LED 1"
+    output: led_1
+
+  - platform: binary
+    name: "LED 2"
+    output: led_2
+
+  - platform: binary
+    name: "LED 3"
+    output: led_3
+
+  - platform: binary
+    name: "LED 4"
+    output: led_4
+
+
