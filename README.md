@@ -20,7 +20,7 @@ la red.
 
 <br>
 <p align="center">
-  <img src="gifreadme/gif1.gif" width="400">
+  <img src="gifreadme/gif2.gif" width="400">
 </p>
 <br>
 
