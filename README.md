@@ -3,7 +3,6 @@ El código original del Arduino, proporcionado por el kit de Keyestudio,
 fue modificado y ampliado mediante la incorporación de nuevas funciones y mejoras adicionales.
 
 <br>
-<br>
 
 El sistema usa un seguidor solar con cuatro sensores LDR que detectan la luz y ajustan
 la posición del panel mediante servomotores para que siempre esté en el mejor
