@@ -12,7 +12,7 @@ acceder a los datos de forma más cómoda y organizada desde cualquier dispositi
 la red.
 <br>
 <p align="center">
-  <img src="gifreadme/gif1.webp" width="400">
+  <img src="readme/gif1.webp" width="400">
 </p>
 <br>
 
@@ -23,6 +23,6 @@ puede gestionar desde una página web que hemos montado, donde se encuentran
 accesos rápidos a Home Assistant, Portainer y Nextcloud, facilitando el uso del sistema.
 <br>
 <p align="center">
-  <img src="gifreadme/gif2.webp" width="800">
+  <img src="readme/gif2.webp" width="800">
 </p>
 <br>
