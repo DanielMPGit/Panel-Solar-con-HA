@@ -1,28 +1,22 @@
-Este proyecto no fue desarrollado completamente desde cero. 
-El código original del Arduino, proporcionado por el kit de Keyestudio, 
-fue modificado y ampliado mediante la incorporación de nuevas funciones y mejoras adicionales.
+This project was not developed entirely from scratch.  
+The original Arduino code, provided by the Keyestudio kit,  
+was modified and expanded by adding new functions and additional improvements.
 
 <br>
 
-El sistema usa un seguidor solar con cuatro sensores LDR que detectan la luz y ajustan
-la posición del panel mediante servomotores para que siempre esté en el mejor
-ángulo. Además, incluye sensores como el DHT11, que mide la temperatura y la
-humedad, tambien una pantalla LCD donde se pueden ver los datos básicos. Pero para
-hacer el proyecto más completo, añadimos una Orange Pi, que recoge toda la
-información a través de un ESP32 y la muestra en Home Assistant, permitiendo
-acceder a los datos de forma más cómoda y organizada desde cualquier dispositivo de
-la red.
+The system uses a solar tracker with four LDR sensors that detect light and adjust  
+the panel’s position using servomotors to always stay at the optimal angle. It also includes sensors such as the DHT11, which measures temperature and humidity, and an LCD screen to display basic data. To make the project more complete, we added an Orange Pi, which collects all the information through an ESP32 and displays it in Home Assistant, allowing easy and organized access from any device on the network.  
+
 <br>
 <p align="center">
   <img src="readme/gif1.webp" width="400">
 </p>
 <br>
 
-Para que todo funcione de manera más ordenada, también incluimos Portainer, que
-nos permite manejar los contenedores Docker donde corren las aplicaciones, y
-Nextcloud, que actúa como una nube privada para almacenar archivos. Todo esto se
-puede gestionar desde una página web que hemos montado, donde se encuentran
-accesos rápidos a Home Assistant, Portainer y Nextcloud, facilitando el uso del sistema.
+To keep everything running smoothly, we also included Portainer, which  
+lets us manage the Docker containers where the applications run, and  
+Nextcloud, which acts as a private cloud to store files. All of this can be accessed from a web page we set up, which provides quick links to Home Assistant, Portainer, and Nextcloud, making the system easy to use.  
+
 <br>
 <p align="center">
   <img src="readme/gif2.webp" width="800">
