@@ -17,3 +17,9 @@ To keep everything running smoothly, we also included Portainer, which lets us m
   <img src="readme/gif2.webp" width="800">
 </p>
 <br>
+
+<div align="center">
+  <p style="font-size: 14px">
+    Licensed under the <b>MIT License</b> · <a href="LICENSE">View license</a>
+  </p>
+</div>
