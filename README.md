@@ -1,23 +1,185 @@
-This project was not developed entirely from scratch. The original Arduino code, provided by the Keyestudio kit, was modified and expanded by adding new functions and additional improvements.
+<div align="center">
+
+# ☀️ Smart Solar Tracker
+
+Dual-axis solar tracker with real-time monitoring in Home Assistant, running on a self-hosted Orange Pi.
+
+![Arduino](https://img.shields.io/badge/Arduino-UNO-00979D?logo=arduino&logoColor=white)
+![ESPHome](https://img.shields.io/badge/ESPHome-ESP32-000000?logo=esphome&logoColor=white)
+![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Docker-41BDF5?logo=homeassistant&logoColor=white)
+![Nextcloud](https://img.shields.io/badge/Nextcloud-Docker-0082C9?logo=nextcloud&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Portainer-2496ED?logo=docker&logoColor=white)
+
+</div>
+
+## ✨ Overview
+
+This project builds on the **Keyestudio KS0530 Solar Tracking Kit**. The original Arduino code was modified and expanded with new functions, and the data is now sent through an ESP32 to **Home Assistant**, running on an **Orange Pi 3B**, so it can be monitored from any device on the local network.
+
+## 🚀 Demo
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="img/gif1.webp" height="340" alt="Demo on phone"></td>
+      <td align="center"><img src="img/gif2.webp" width="520" alt="Demo on PC"></td>
+    </tr>
+    <tr>
+      <td align="center">Phone · Home Assistant Android app</td>
+      <td align="center">PC · Home Assistant in the browser</td>
+    </tr>
+  </table>
+</div>
+
+## 💡 Features
+
+| Feature | Description |
+|---|---|
+| Solar tracking | The panel follows the strongest light source on two axes |
+| Environment monitoring | Temperature, humidity and light level in real time |
+| Local display | Key values shown on the device itself |
+| Adjustable step | A button changes the tracking step from 1 to 5° with sound feedback |
+| Dashboard | All data in Home Assistant, from any device on the network |
+| Remote control | 4 LEDs switched from the dashboard |
+| Self-hosted tools | Docker management and a private cloud |
+| Start page | One web page with quick links to every service |
+
+## 🛠️ Architecture
+
+```mermaid
+%%{init: {'theme':'dark','themeVariables':{'fontSize':'13px','edgeLabelBackground':'#0d1117','lineColor':'#8b949e'},'flowchart':{'nodeSpacing':12,'rankSpacing':28,'padding':6}}}%%
+flowchart LR
+    S1["LDRs"]
+    S2["DHT11"]
+    S3["BH1750"]
+    S4["Button"]
+
+    A(["<b>Keyestudio UNO</b>"])
+
+    O1["LCD"]
+    O2["Step Motors x2"]
+
+    B["<b>ESP32</b>"]
+    L["LEDS x4"]
+    C["<b>Orange Pi 3B</b><br/>Docker"]
+
+    H["Home Assistant"]
+    N["Nextcloud"]
+    D["ESPHome"]
+    P["Portainer"]
+    W["Apache"]
+
+    S1 & S2 & S3 & S4 --> A
+    A --> O1 & O2
+    A -->|"UART"| B
+    B --> L
+    B <-->|"ESPHome API · Wi-Fi"| C
+    C --- H & P & N & D & W
+
+    classDef sensor fill:#0d2818,stroke:#2ea043,color:#e6edf3;
+    classDef step fill:#161b22,stroke:#30363d,color:#e6edf3;
+    classDef svc fill:#0d1117,stroke:#30363d,color:#e6edf3;
+
+    class S1,S2,S3,S4 sensor
+    class A,B,C step
+    class O1,O2,L,H,P,N,D,W svc
+```
+
+**UART:** `light|temp|hum|lr|ud|resolution`
+
+## ⚙️ Hardware
+
+| Component | Role |
+|---|---|
+| Keyestudio KS0530 kit (Keyestudio UNO) | Tracker structure, 2 servos, 4 LDRs, button, buzzer, LCD |
+| BH1750 | Accurate light intensity (lux) |
+| DHT11 | Temperature and humidity |
+| Solar module + 18650 battery | Power and USB charging |
+| ESP32 | Wi-Fi bridge running ESPHome |
+| Orange Pi 3B | Home server running the Docker containers |
+
+## 🔌 Wiring
+
+| Device | Arduino pin |
+|---|---|
+| LDRs (left, right, up, down) | `A0`, `A1`, `A2`, `A3` |
+| Servo horizontal / vertical | `D9` / `D10` |
+| DHT11 | `D7` |
+| Button | `D2` |
+| Buzzer | `D6` |
+| LCD and BH1750 (I²C) | `A4` (SDA), `A5` (SCL) |
+| ESP32 power | 3.3 V pin of the Arduino |
+
+## 💾 Data format
+
+The Arduino sends one line per cycle, and ESPHome splits it into sensors:
+
+| Position | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| Value | Light (lux) | Temperature (°C) | Humidity (%) | LR angle (°) | UD angle (°) | Resolution (1–5) |
+
+
+## 📂 Repository
+
+| Path | Description |
+|---|---|
+| [`web/`](web/) | Start page served by Apache |
+| [`img/`](img/) | README media (demo videos) |
+| [`LICENSE`](LICENSE) | Project license |
+| [`README.md`](README.md)` | Project documentation |
+| [`solar_panel.ino`](solar_panel.ino) | Arduino firmware: tracking, sensors, LCD and UART output |
+| [`esphome_code.yaml`](esphome_code.yaml) | ESPHome configuration for the ESP32 |
+| [`commands.txt`](commands.txt) | Commands used to set up the Orange Pi |
+| [`doc.pdf`](doc.pdf) | Full project report (Spanish) 
+
+
+## 🔧 Setup
+
+| Step | What to do |
+|---|---|
+| 1. Arduino | Install `LiquidCrystal_I2C`, `BH1750`, `ArduinoJson` and `dht11`, then upload `solar_panel.ino` |
+| 2. ESP32 | Flash `esphome_code.yaml` with ESPHome (keep Wi-Fi credentials in `secrets.yaml`) |
+| 3. Server | Install Docker and run the containers below |
+| 4. Start page | Install Apache and copy `web/` into `/srv/http/` |
+
+Containers (full history in [`commands.txt`](commands.txt)):
+
+```bash
+# Portainer
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data \
+  portainer/portainer-ce:2.21.5
+
+# Nextcloud
+docker run -d -p 8080:80 --name nextcloud --restart unless-stopped nextcloud
+
+# ESPHome dashboard
+docker run -d --name esphome --network host --restart=unless-stopped \
+  -v /opt/esphome:/config esphome/esphome
+
+# Start page
+sudo pacman -S apache && sudo systemctl enable --now httpd
+sudo cp -r web/* /srv/http/
+```
+
+Home Assistant is deployed with Docker Compose and [HACS](https://hacs.xyz).
+
+## 🧩 Services
+
+| Service | Purpose | Port |
+|---|---|---|
+| Home Assistant | Dashboard and automations | `8123` |
+| Portainer | Docker management | `9443` |
+| Nextcloud | Private cloud | `8080` |
+| ESPHome | ESP32 configuration and logs | `6052` |
+| Start page (Apache) | Links to everything | `80` |
+
+## 📝 Documentation
+
+For full documentation (components, budget, assembly, wiring diagrams, software setup and enclosure), see [`doc.pdf`](doc.pdf). It is written in **Spanish**.
 
 <br>
-
-The system uses a solar tracker with four LDR sensors that detect light and adjust the panel’s position using servomotors to always stay at the optimal angle. It also includes sensors such as the DHT11, which measures temperature and humidity, and an LCD screen to display basic data. To make the project more complete, we added an Orange Pi, which collects all the information through an ESP32 and displays it in Home Assistant, allowing easy and organized access from any device on the network.  
-
-<br>
-<p align="center">
-  <img src="readme/gif1.webp" width="400">
-</p>
-<br>
-
-To keep everything running smoothly, we also included Portainer, which lets us manage the Docker containers where the applications run, and Nextcloud, which acts as a private cloud to store files. All of this can be accessed from a web page we set up, which provides quick links to Home Assistant, Portainer, and Nextcloud, making the system easy to use.
-
-<br>
-<p align="center">
-  <img src="readme/gif2.webp" width="800">
-</p>
-<br>
-
 <div align="center">
   <p style="font-size: 14px">
     Licensed under the <b>MIT License</b> · <a href="LICENSE">View license</a>
