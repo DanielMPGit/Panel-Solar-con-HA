@@ -145,6 +145,14 @@ The Arduino sends one line per cycle, and ESPHome splits it into sensors:
 Containers (full history in [`commands.txt`](commands.txt)):
 
 ```bash
+# Home Assistant
+docker ps
+git clone https://github.com/jmlcas/home-assistant
+cd home-assistant
+sudo docker-compose up -d
+docker exec -it homeassistant bash
+wget -O - https://get.hacs.xyz | bash -
+
 # Portainer
 docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always \
@@ -162,8 +170,7 @@ docker run -d --name esphome --network host --restart=unless-stopped \
 sudo pacman -S apache && sudo systemctl enable --now httpd
 sudo cp -r web/* /srv/http/
 ```
-
-Home Assistant is deployed with Docker and [HACS](https://hacs.xyz).
+> **Note:** I recommend using a Docker Compose configuration instead of a `docker run` command, as it provides better control and makes the setup easier to manage and maintain.
 
 ## 🧩 Services
 
