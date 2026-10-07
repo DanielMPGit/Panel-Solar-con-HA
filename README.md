@@ -163,7 +163,7 @@ sudo pacman -S apache && sudo systemctl enable --now httpd
 sudo cp -r web/* /srv/http/
 ```
 
-Home Assistant is deployed with Docker Compose and [HACS](https://hacs.xyz).
+Home Assistant is deployed with Docker and [HACS](https://hacs.xyz).
 
 ## 🧩 Services
 
