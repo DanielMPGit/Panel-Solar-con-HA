@@ -170,7 +170,7 @@ docker run -d --name esphome --network host --restart=unless-stopped \
 sudo pacman -S apache && sudo systemctl enable --now httpd
 sudo cp -r web/* /srv/http/
 ```
-> **Note:** I recommend using a Docker Compose configuration instead of a `docker run` command, as it provides better control and makes the setup easier to manage and maintain.
+> **Note:** The project originally used the `docker run` commands shown above. An updated [`docker-compose.yaml`](docker-compose.yaml) has since been added, which is recommended as it provides better control and makes the setup easier to manage and maintain. The original `docker run` commands are still included above for reference.
 
 ## 🧩 Services
 
