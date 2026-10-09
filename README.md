@@ -46,44 +46,11 @@ This project builds on the **Keyestudio KS0530 Solar Tracking Kit**. The origina
 
 ## 🛠️ Architecture
 
-```mermaid
-%%{init: {'theme':'dark','themeVariables':{'fontSize':'13px','edgeLabelBackground':'#0d1117','lineColor':'#8b949e'},'flowchart':{'nodeSpacing':12,'rankSpacing':28,'padding':6}}}%%
-flowchart LR
-    S1["LDR x4"]
-    S2["DHT11"]
-    S3["BH1750"]
-    S4["Button"]
+<div align="center">
 
-    A(["<b>Keyestudio UNO</b>"])
+<img src="img/map.svg" alt="architecture" width="900">
 
-    O1["LCD"]
-    O2["Servos x2"]
-
-    B["<b>ESP32</b>"]
-    L["LEDS x4"]
-    C["<b>Orange Pi 3B</b><br/>Docker"]
-
-    H["Home Assistant"]
-    N["Nextcloud"]
-    D["ESPHome"]
-    P["Portainer"]
-    W["Apache"]
-
-    S1 & S2 & S3 & S4 --> A
-    A --> O1 & O2
-    A -->|"UART"| B
-    B --> L
-    B <-->|"ESPHome API · Wi-Fi"| C
-    C --- H & P & N & D & W
-
-    classDef sensor fill:#0d2818,stroke:#2ea043,color:#e6edf3;
-    classDef step fill:#161b22,stroke:#30363d,color:#e6edf3;
-    classDef svc fill:#0d1117,stroke:#30363d,color:#e6edf3;
-
-    class S1,S2,S3,S4 sensor
-    class A,B,C step
-    class O1,O2,L,H,P,N,D,W svc
-```
+</div>
 
 **UART:** `light|temp|hum|lr|ud|resolution`
 
