@@ -52,6 +52,8 @@ This project builds on the **Keyestudio KS0530 Solar Tracking Kit**. The origina
 
 </div>
 
+<br>
+
 **UART:** `light|temp|hum|lr|ud|resolution`
 
 ## ⚙️ Hardware
