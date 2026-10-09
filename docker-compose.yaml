@@ -9,10 +9,6 @@ services:
       - portainer_data:/data
     restart: unless-stopped
 
-# To use MariaDB on HomeAssistant add this con configuration.yaml
-# recorder:
-#   db_url: mysql://<HA-BDD-USER>:<HA-BDD-PASSWORD>@mariadb/homeassistant?charset=utf8mb4
-
   mariadb:
     image: mariadb:11
     container_name: mariadb
@@ -27,8 +23,10 @@ services:
     networks:
       - solar-panel
 
+# Nextcloud: remove "depends_on" and "environment" if MariaDB is not needed.
+
   nextcloud:
-    image: nextcloud:apache
+    image: nextcloud:latest
     container_name: nextcloud
     restart: unless-stopped
     depends_on:
@@ -38,14 +36,17 @@ services:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: root
       MYSQL_PASSWORD: <MYSQL-ROOT-PASSWORD>
-      NEXTCLOUD_ADMIN_USER: <NC-ADMIN-USER>
-      NEXTCLOUD_ADMIN_PASSWORD: <NC-ADMIN-PASSWORD>
     volumes:
       - ./nextcloud:/var/www/html
     ports:
       - "8080:80"
     networks:
       - solar-panel
+
+# Home Assistant: remove "depends_on" if MariaDB is not needed.
+# To use MariaDB in Home Assistant, add this to configuration.yaml:
+# recorder:
+#   db_url: mysql://<HA-BDD-USER>:<HA-BDD-PASSWORD>@mariadb/homeassistant?charset=utf8mb4
 
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
