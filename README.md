@@ -49,7 +49,7 @@ This project builds on the **Keyestudio KS0530 Solar Tracking Kit**. The origina
 ```mermaid
 %%{init: {'theme':'dark','themeVariables':{'fontSize':'13px','edgeLabelBackground':'#0d1117','lineColor':'#8b949e'},'flowchart':{'nodeSpacing':12,'rankSpacing':28,'padding':6}}}%%
 flowchart LR
-    S1["LDRs"]
+    S1["LDR x4"]
     S2["DHT11"]
     S3["BH1750"]
     S4["Button"]
@@ -57,7 +57,7 @@ flowchart LR
     A(["<b>Keyestudio UNO</b>"])
 
     O1["LCD"]
-    O2["Step Motors x2"]
+    O2["Servos x2"]
 
     B["<b>ESP32</b>"]
     L["LEDS x4"]
@@ -91,12 +91,12 @@ flowchart LR
 
 | Component | Role |
 |---|---|
-| Keyestudio KS0530 kit (Keyestudio UNO) | Tracker structure, 2 servos, 4 LDRs, button, buzzer, LCD |
+| Keyestudio KS0530 kit (Keyestudio UNO) | Tracker structure, Servos x2, LDRs x4, button, buzzer, LCD |
 | BH1750 | Accurate light intensity (lux) |
 | DHT11 | Temperature and humidity |
 | Solar module + 18650 battery | Power and USB charging |
 | ESP32 | Wi-Fi bridge running ESPHome |
-| Orange Pi 3B | Home server running the Docker containers |
+| Orange Pi 3B | Running Docker containers (Arch Linux; Ubuntu Server recommended) |
 
 ## 🔌 Wiring
 
@@ -126,11 +126,12 @@ The Arduino sends one line per cycle, and ESPHome splits it into sensors:
 | [`web/`](web/) | Start page served by Apache |
 | [`img/`](img/) | README media (demo videos) |
 | [`LICENSE`](LICENSE) | Project license |
-| [`README.md`](README.md)` | Project documentation |
+| [`README.md`](README.md) | Project documentation |
 | [`solar_panel.ino`](solar_panel.ino) | Arduino firmware: tracking, sensors, LCD and UART output |
 | [`esphome_code.yaml`](esphome_code.yaml) | ESPHome configuration for the ESP32 |
 | [`commands.txt`](commands.txt) | Commands used to set up the Orange Pi |
-| [`doc.pdf`](doc.pdf) | Full project report (Spanish) 
+| [`docker-compose.yaml`](docker-compose.yaml) | Docker Compose stack for the services |
+| [`doc.pdf`](doc.pdf) | Full project report (Spanish) |
 
 
 ## 🔧 Setup
@@ -139,8 +140,8 @@ The Arduino sends one line per cycle, and ESPHome splits it into sensors:
 |---|---|
 | 1. Arduino | Install `LiquidCrystal_I2C`, `BH1750`, `ArduinoJson` and `dht11`, then upload `solar_panel.ino` |
 | 2. ESP32 | Flash `esphome_code.yaml` with ESPHome (keep Wi-Fi credentials in `secrets.yaml`) |
-| 3. Server | Install Docker and run the containers below |
-| 4. Start page | Install Apache and copy `web/` into `/srv/http/` |
+| 3. Server | Set a static IP with `orangepi-config`, install Docker and run the containers below |
+| 4. Start page | Install Apache and copy `web/` into the web root (`/srv/http/` on Arch, `/var/www/html/` on Ubuntu) |
 
 Containers (full history in [`commands.txt`](commands.txt)):
 
@@ -170,7 +171,8 @@ docker run -d --name esphome --network host --restart=unless-stopped \
 sudo pacman -S apache && sudo systemctl enable --now httpd
 sudo cp -r web/* /srv/http/
 ```
-> **Note:** The project originally used the `docker run` commands shown above. An updated [`docker-compose.yaml`](docker-compose.yaml) has since been added, which is recommended as it provides better control and makes the setup easier to manage and maintain. The original `docker run` commands are still included above for reference.
+
+> **Note:** The project originally used the `docker run` commands above. The recommended way is now [`docker-compose.yaml`](docker-compose.yaml), which also adds an optional MariaDB database (see the comments in the file).
 
 ## 🧩 Services
 
